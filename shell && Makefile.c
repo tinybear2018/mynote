@@ -83,10 +83,10 @@
 		(4)if [[ A&&B ]]
 	
 	自定义函数 //必须用function声明吗？
-	function 函数名(){  
-	...  
-	}
-	
+		function 函数名(){  
+		...  
+		}
+		引用其他文件中的函数时，润在func.sh中定义了某个函数，可以source func.sh
 	read 从终端读入 
 		read如果后面不指定变量，那么read命令会将接收到的数据放置在环境变量REPLY中
 		read  -s  -p "Enter your password: " passwd
@@ -123,14 +123,64 @@
 		
 	CRONTAB 定时器任务 //?????????
 2Makefile
+	make -f Make.Linux  指定makfile的文件名字
+	显式规则、隐晦规则、变量定义、文件指示和注释。
+
+	
+	伪目标文件
+		.PHONY：TINYBEAR
+	sinclude和include的意义是一样的，会在当前位置替换 
+	
+	环境变量 MAKEFILES //神奇的东西 最好不用
+	
+	Makefile中的命令，必须要以[Tab]键开始。
+	或者在一行的话，可以加";"后执行
+	targets : prerequisites ; command
+	command
+	
+	文件搜寻
+	1 用大写的VPATH指定
+		VPATH = src:../headers
+	2 使用命令
+		1、vpath <pattern> <directories>
+		vpath %.h ../headers
+	
+	静态模式规则
+		$(objects): %.o: %.c
+			$(CC) -c $(CFLAGS) $< -o $@
+	$@ 目标的集合
+		“$<”表示所有的依赖目标集（也就是 “foo.c bar.c”），
+		“$@”表示目标集（也就是“foo.o bar.o”）。
+		
+	$(sources:.c=.d)
+	
+	
+	书写命令 //
+	
+		定义命令包 这是什么鬼？？？
 
 
 
 
-
-
-
-
+	变量
+	变量名前加上“$”符号，但最好用小括号“（）”或是大括号“{}”把变量给
+	
+	用法1
+		foo := a.o b.o c.o
+		bar := $(foo:.o=.c)
+	用法2
+		foo := a.o b.o c.o
+		bar := $(foo:%.o=%.c)
+	
+	override 指示符
+		
+	用define和endef定义
+	
+	目标变量
+		只是针对特定目标有效的变量
+		
+	模式变量 （Pattern-specific Variable）
+		%.o : CFLAGS = -O
 
 
 
