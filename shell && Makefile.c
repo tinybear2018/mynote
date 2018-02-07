@@ -122,19 +122,104 @@
 		指定时间输出  --date='3 days ago' （3天之前，3天之后可以用-3
 		
 	CRONTAB 定时器任务 //
-2Makefile
+
+2 Makefile
 	变量在声明时需要给予初值，而在使用时，需要给在变量名前加上“$”符号，
 	但最好用小括号“（）”或是大括号“{}”把变量给包括起来。
 	如果你要使用真实的“$”字符，那么你需要用“$$”来表示。
+	
+	31 字符串
+		$(subst <from>,<to>,<text>) 把字串<text>中的<from>字符串替换成<to>。
+		//$(subst ee,EE,feet on the street)
+	
+		$(patsubst <pattern>,<replacement>,<text>)
+		查找<text>中的单词（单词以“空格”、“Tab”或“回车”“换行”分隔）是否符合模式< pattern>
+		如果匹配的话，则以<replacement>替换。
+		“$(objects:.o=.c)”和“$(patsubst %.o,%.c,$(objects))”
+
+		$(strip <string>)
+		功能：去掉<string>;字串中开头和结尾的空字符
+		
+		$(findstring <find>,<in>)
+		功能：在字串<in>中查找<find>字串
+		返回：如果找到，那么返回<find>，否则返回空字符串。
+		
+		$(filter <pattern...>,<text>)
+		以<pattern>模式过滤<text>字符串中的单词
+			保留符合模式<pattern>的单词。可以有多个模式。
+			//$(filter %.c %.s,$(sources))返回的值是“foo.c bar.c baz.s”。
+		$(filter-out <pattern...>,<text>)
+		
+		$(sort <list>)
+		给字符串<list>中的单词排序（升序）
+		
+		word wordlist words
+		
+		综合练习：override CFLAGS += $(patsubst %,-I%,$(subst :, ,$(VPATH)))
+		
+	32 文件操作相关函数
+		dir 取目录
+		notdir 取得文件名字
+		
+		$(suffix <names...>) 
+			返回文件名序列<names>的后缀序列，如果文件没有后缀，则返回空字串
+		
+		$(basename <names...>)
+			返回文件名序列<names>的前缀序列，如果文件没有前缀，则返回空字串。
+		
+		$(addsuffix <suffix>,<names...>) 
+			把后缀<suffix>加到<names>中的每个单词后面
+			$(addsuffix .c,foo bar)返回值是“foo.c bar.c”
+			
+		$(addprefix <prefix>,<names...>) 
+			把前缀<prefix>加到<names>中的每个单词前面
+			$(addprefix src/,foo bar)返回值是“src/foo src/bar”
+			
+		$(join <list1>,<list2>)
+			$(join aaa bbb , 111 222 333)返回值是“aaa111 bbb222 333”。
+			
+		foreach 函数
+			names := a b c d
+			files := $(foreach n,$(names),$(n).o)
+				把参数<list>中的单词逐一取出放到参数所指定的变量中，
+			然后再执行< text>所包含的表达式。
+			
+		$(call <expression>,<parm1>,<parm2>,<parm3>,...)
+			当make执行这个函数时，<expression>参数中的变量，如$(1)，$(2)，$(3)等，
+		会被参数< parm1>，<parm2>，<parm3>依次取代。
+		
+			reverse =  $(1) $(2)
+			foo = $(call reverse,a,b)
+			
+		“undefined”
+		如果<variable>;从来没有定义过，origin函数返回这个值“undefined”。
+		“default”
+		如果<variable>;是一个默认的定义，比如“CC”这个变量，这种变量我们将在后面讲述。
+		“environment”
+		如果<variable>;是一个环境变量，并且当Makefile被执行时，“-e”参数没有被打开。
+		“file”
+		如果<variable>;这个变量被定义在Makefile中。
+		“command line”
+		如果<variable>;这个变量是被命令行定义的。
+		“override”
+		如果<variable>;是被override指示符重新定义的。
+		“automatic”
+		如果<variable>;是一个命令运行中的自动化变量。关于自动化变量将在后面讲述。
 
 
 
 
 
-
-
-
-
-
-
+				
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
